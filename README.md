@@ -12,8 +12,8 @@ TRAINING:
 
 - There are 3 steps involved in training the PoWER-BERT:
         - Fine-tuning step: Train BERT on downstream task
-        - Configuration-search step: Introduce Soft-Extract layer afterthe self-attention module of each encoder layer. This step generates the retention configuration          which determines how many wrod-vectors to eliminate from each encoder layer.
-        - Re-training step: Replace the Soft-Extract layers with Extract layers and retrain the previosu model by using the obtained retention configuration.
+        - Configuration-search step: Introduce Soft-Extract layer after the self-attention module of each encoder layer. This step generates the retention configuration          which determines how many wrod-vectors to eliminate from each encoder layer.
+        - Re-training step: Replace the Soft-Extract layers with Extract layers and retrain the previous model by using the obtained retention configuration.
 
 - Install the essential packages to run the PoWER-BERT code using the requirements.txt file included in the Code folder
         - pip install -r requirements.txt
