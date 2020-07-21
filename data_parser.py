@@ -1,17 +1,11 @@
 import os
-#import sys
 import keras
 import codecs
 import csv
-#import json
-#from keras_bert import get_base_dict, get_model, gen_batch_inputs
-#import csv
 import numpy as np
 from keras_bert import Tokenizer
 import unicodedata
 import six
-#from keras import backend as K
-
 
 
 class data_parser:
