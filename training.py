@@ -26,6 +26,16 @@ class training:
                      train_data=None,
                      dev_data=None,
                      LOGFILE_PATH=None):
+        
+            """
+            Makes an instance of training.
+            Args:
+                dev_data: The entire validation data.
+                train_data: The entire training data in the format as taken by fit()
+            Rest of the args are self explanatory.
+            Returns:
+                A training instance that can be used for finetuning, config search & retraining.
+            """
 
             self.BERT_CONFIG_PATH = BERT_CONFIG_PATH
             self.CHECKPOINT_PATH = CHECKPOINT_PATH
@@ -52,6 +62,13 @@ class training:
 
         def fine_tuning_step(self,
                              LR_BERT=0.00003):
+            
+            """
+            Carries out simple fine-tuning for the data given in train_data above.
+            Use it only if the model at checkpoint path has never seen this data.
+            Returns:
+                A string representing path to the fine-tuned model checkpoint.
+            """
 
             fine_tuned_model = load_model(
                 self.BERT_CONFIG_PATH,
@@ -102,6 +119,18 @@ class training:
                                       LAMBDA=0.0001, 
                                       LR_BERT=0.00003, 
                                       LR_SOFT_EXTRACT=0.0001):
+        
+            """
+            Searches for a good output reduction configuration on given model and data.
+                lambda_hyperparam: See the paper for the meaning of this hyper parameter.
+                                   Used for searching the configuration.
+                fine_tuned_model_path: Path to a checkpoint model that has been finetuned
+                                       on given data. Should have been finetuned using above
+                                       funtion only.
+            Returns:
+                (String, np.array): Path to checkpoint representing config search model
+                and the retention configuration for this model.
+            """
 
             ## Define a PoWER-BERT model containing Soft-Extract Layers
             configuration_search_model = load_model(
@@ -162,6 +191,14 @@ class training:
 
         def get_configuration(self, configuration_search_model):
 
+            """
+            Computes the retention config given a trained model with soft extract layers.
+            Args:
+                configuration_search_model: A keras.models.Model that has been given by configuration_search_step().
+            Returns:
+                np.array that contains the word vector elimination (output reduction) configuration.
+            """
+
             retention_configuration = []
             for layer in configuration_search_model.layers:
                 for i in range(1,13):
@@ -183,6 +220,18 @@ class training:
                             configuration_search_model_path=None, 
                             retention_configuration=[], 
                             LR_BERT=0.00003):   
+        
+            """
+            Switches Soft Extract layer to a Hard Extract layer and trains on the given data.
+            Args:
+                configuration_search_model_path: Path to a checkpoint as given by
+                                                 configuration_search_step().
+                retention_configuration: A list of integers representing the number
+                                         of word-vectors to retain after each layer.
+            Returns:
+                A keras.models.Model instance that contains the Hard Extract layer,
+                and can be used for prediction with word-vector elimination.
+            """
 
             ## Define a PoWER-BERT model where Soft-Extract Layers have been replaced by Extract Layers that eliminates the word-vectors
             retrained_model = load_model(
@@ -212,7 +261,11 @@ class training:
             print ("Re-trained model summary: ", retrained_model.summary())
 
             SAVE_CP_PATH = os.path.join(self.OUTPUT_DIR,"retrained.hdf5")
-            checkpoint = ModelCheckpoint(SAVE_CP_PATH, monitor=self.validation_metric, verbose=1, save_best_only=True, mode='max')
+            checkpoint = ModelCheckpoint(SAVE_CP_PATH, 
+                                         monitor=self.validation_metric, 
+                                         verbose=1, 
+                                         save_best_only=True, 
+                                         mode='max')
             history = retrained_model.fit(self.train_data[0],
                                 self.train_data[1],
                                 batch_size=self.BATCH_SIZE, 
