@@ -79,7 +79,7 @@ class Soft_Extract(keras.layers.Layer):
 
         def atten_col(self, avg_atten):
                 row_sum = tf.reduce_sum(avg_atten, axis=1)
-                diag_softmax = tf.matrix_diag_part(avg_atten)
+                diag_softmax = tf.linalg.diag_part(avg_atten)
                 attended_by = tf.math.subtract(row_sum, diag_softmax)
                 return attended_by
 
@@ -132,7 +132,7 @@ class Hard_Extract(keras.layers.Layer):
 
         def atten_col(self, avg_atten):
                 row_sum = tf.reduce_sum(avg_atten, axis=1)
-                diag_softmax = tf.matrix_diag_part(avg_atten)
+                diag_softmax = tf.linalg.diag_part(avg_atten)
                 attended_by = tf.math.subtract(row_sum, diag_softmax)
                 return attended_by
 

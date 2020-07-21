@@ -295,8 +295,10 @@ def load_model(config_file,
         TASK=TASK,
         **kwargs
     )
+    
     load_checkpoint(model, 
                     config, 
                     checkpoint_file, 
                     FLAG_BERT_PRETRAINED=FLAG_BERT_PRETRAINED)
+    
     return model

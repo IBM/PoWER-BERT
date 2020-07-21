@@ -5,21 +5,11 @@ import json
 import csv
 import numpy as np
 import keras.backend as K
+from utils.mean_squared_error import metric_cor
 from Adam_mult import AdamWarmup, calc_train_steps
 from checkpoint_loader import load_model
-from keras.callbacks import  ModelCheckpoint
+from keras.callbacks import ModelCheckpoint
 
-
-def metric_cor (y_true, y_pred):
-        n = K.sum(K.ones_like(y_true))
-        sum_x = K.sum(y_true)
-        sum_y = K.sum(y_pred)
-        sum_x_sq = K.sum(K.square(y_true))
-        sum_y_sq = K.sum(K.square(y_pred))
-        psum = K.sum(y_true * y_pred)
-        num = psum - (sum_x * sum_y / n)
-        den = K.sqrt((sum_x_sq - K.square(sum_x) / n) *  (sum_y_sq - K.square(sum_y) / n))
-        return (num / den)
 
 
 class training:
@@ -85,9 +75,13 @@ class training:
                     metrics=self.metric,
                 )
                 print ("Fine-tuned model summary: ", fine_tuned_model.summary())
-                
+
                 SAVE_CP_PATH = os.path.join(self.OUTPUT_DIR,"finetune.hdf5")
-                checkpoint = ModelCheckpoint(SAVE_CP_PATH, monitor=self.validation_metric, verbose=1, save_best_only=True, mode='max')
+                checkpoint = ModelCheckpoint(SAVE_CP_PATH, 
+                                             monitor=self.validation_metric,
+                                             verbose=1, 
+                                             save_best_only=True,
+                                             mode='max')
                 history = fine_tuned_model.fit(self.train_data[0], 
                                      self.train_data[1], 
                                      batch_size=self.BATCH_SIZE, 
@@ -119,12 +113,13 @@ class training:
                     LAMBDA=LAMBDA,
                     FLAG_EXTRACT_LAYER=1,
                     TASK=self.TASK)
+                
                 configuration_search_model.load_weights(fine_tuned_model_path, by_name=True)
-
+                
                 decay_steps, warmup_steps = calc_train_steps(
                     self.NUM_TRAIN,
                     batch_size=self.BATCH_SIZE,
-                    epochs=5, #self.EPOCHS,
+                    epochs=self.EPOCHS,
                 )
 
                 ## Set different Learning rates for original BERT parameters and the retnetion parameters fo the Soft-Extract Layers
@@ -149,7 +144,7 @@ class training:
                 configuration_search_model.fit(self.train_data[0],
                                                self.train_data[1],
                                                batch_size=self.BATCH_SIZE, 
-                                               epochs=5, #self.EPOCHS, 
+                                               epochs=1, #self.EPOCHS, 
                                                validation_data=(self.dev_data[0], self.dev_data[1], None),
                                                verbose=1)
                 SAVE_CP_PATH = os.path.join(self.OUTPUT_DIR,'configuration_search_model.hdf5')
@@ -227,6 +222,4 @@ class training:
                                     callbacks=[checkpoint])
                 with open(self.LOGFILE_PATH, 'a') as fp:
                         fp.write("\n Re-trained model accuracies for all epochs on the Dev set:" + str(history.history[self.validation_metric]))
-
-                return retrained_model
 
