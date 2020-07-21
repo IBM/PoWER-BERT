@@ -109,8 +109,7 @@ if __name__ == "__main__":
         if not args.EVAL_ONLY and not args.PREDICT_ONLY:
 
             
-            #train_x, train_y = dataset_parser.get_train_data()
-            train_x, train_y = dataset_parser.get_dev_data()
+            train_x, train_y = dataset_parser.get_train_data()
             dev_x, dev_y = dataset_parser.get_dev_data()
 
             ## Create training object 

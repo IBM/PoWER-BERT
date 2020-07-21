@@ -123,8 +123,11 @@ python main.py --TASK "mrpc" \
 We describe below addtional arguments used for Evaluation/Prediction.
 
 ``EVAL_ONLY/PREDICT_ONLY`` Set the flag to carry out evaluation/prediction on the dev.tsv/test.tsv file present in the ``DATA_DIR``
-``MODEL_FORMAT`` Format of the model present at the ``CHECKPOINT_PATH`` to be usedd for evaluation/prediction. Allowed values are {``CKPT`` , ``HDF5``}. ``CKPT`` is used for the ``.ckpt`` TensorFlow model and ``HDF5`` is used for the ``.hdf5`` Keras model. 
+
+``MODEL_FORMAT`` Format of the model present at the ``CHECKPOINT_PATH`` to be used for evaluation/prediction. Allowed values are {``CKPT`` , ``HDF5``}. ``CKPT`` is used for the ``.ckpt`` TensorFlow model and ``HDF5`` is used for the ``.hdf5`` Keras model. 
+
 ``RETENTION_CONFIG`` For a transformer with *N* blocks, this should be specified as *N* monotonically non-increasing comma separated values - the first value is generally the *maximum sequence length* used for the task. For example, for MRPC, to use all word-vectors at each of the 12 transformer blocks (as used for ``BERT-Base``), we can specify RETENTION_CONFIG="128,128,128,128,128,128,128,128,128,128,128,128". Another feasible setting is, for example, RETENTION_CONFIG="128,128,128,128,64,64,64,64,32,32,32,32". The optimum retention configuration for the task is however obtained from the training logs as stated above.
+
 ``PRED_GLUE`` Set this flag during prediction (i.e. when ``PREDICT_ONLY`` flag is set) if the dataset belongs to the GLUE Benchmark. This flag will save the predictions to be submitted to the GLUE evaluation server in the ``OUTPUT_DIR``.
  
 NOTE:  For both evalutation and prediction, ``RETENTION_CONFIG`` is a mandatory argument that needs to be provided to the above python call. If not provided then a default value equal to Sequence length shall be used for evaluation/prediction.
