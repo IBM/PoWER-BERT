@@ -91,13 +91,13 @@ if __name__ == "__main__":
                 task_config = json.loads(reader.read())
         seq_len = task_config[args.TASK]['seq_len']
         num_classes = task_config[args.TASK]['num_classes']
-
+        
         ## Create data parser to load Train/Dev/Test data
         dataset_parser = data_parser(VOCAB_PATH=args.VOCAB_PATH, 
                                      TASK=args.TASK, 
                                      SEQ_LEN=seq_len,
                                      DATA_DIR=args.DATA_DIR,
-                                     CASED=False if args.CASED is None else True)
+                                     CASED=args.CASED)
         
         ## Setup logging file to write the results
         LOGFILE_PATH = os.path.join(args.OUTPUT_DIR, "log_file.txt")
