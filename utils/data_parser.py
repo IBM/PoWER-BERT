@@ -14,7 +14,8 @@ class data_parser:
                      VOCAB_PATH=None,
                      TASK=None,
                      SEQ_LEN=None,
-                     DATA_DIR=None):
+                     DATA_DIR=None,
+                     CASED=False):
                 
                 self.TASK = TASK
                 self.SEQ_LEN = SEQ_LEN
@@ -27,7 +28,7 @@ class data_parser:
                         self.token_dict[token] = len(self.token_dict)
 
 
-                self.tokenizer = Tokenizer(self.token_dict, cased=False)
+                self.tokenizer = Tokenizer(self.token_dict, cased=CASED)
 
 
         def _read_tsv(self, input_file, quotechar=None):

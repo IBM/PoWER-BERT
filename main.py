@@ -96,8 +96,8 @@ if __name__ == "__main__":
         dataset_parser = data_parser(VOCAB_PATH=args.VOCAB_PATH, 
                                      TASK=args.TASK, 
                                      SEQ_LEN=seq_len,
-                                     DATA_DIR=args.DATA_DIR)
-
+                                     DATA_DIR=args.DATA_DIR,
+                                     CASED=False if args.CASED is None else True)
         
         ## Setup logging file to write the results
         LOGFILE_PATH = os.path.join(args.OUTPUT_DIR, "log_file.txt")
