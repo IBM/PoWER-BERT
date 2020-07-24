@@ -65,7 +65,6 @@ python main.py --TASK "mrpc" \
 --BERT_CONFIG_PATH $BERT_BASE_DIR/bert_config.json  \
 --CHECKPOINT_PATH $BERT_BASE_DIR/bert_model.ckpt \
 --VOCAB_PATH $BERT_BASE_DIR/vocab.txt \
---CASED \
 --DATA_DIR $GLUE_DIR/MRPC \
 --EPOCH 3 \
 --BATCH_SIZE 64 \

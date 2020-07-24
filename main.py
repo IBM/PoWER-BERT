@@ -5,12 +5,11 @@ import argparse
 import numpy as np
 import warnings
 from training import training
-from data_parser import data_parser
+from utils.data_parser import data_parser
 from evaluation import eval
 from prediction import predict, save_pred_glue
 from utils.retention_parser import retention_config_parser
-from checkpoint_loader import build_model_from_config, load_model, load_checkpoint
-from Adam_mult import AdamWarmup, calc_train_steps
+from model.checkpoint_loader import build_model_from_config, load_model, load_checkpoint
 
 
 if __name__ == "__main__":

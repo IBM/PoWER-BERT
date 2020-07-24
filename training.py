@@ -6,8 +6,8 @@ import csv
 import numpy as np
 import keras.backend as K
 from utils.mean_squared_error import metric_cor
-from Adam_mult import AdamWarmup, calc_train_steps
-from checkpoint_loader import load_model
+from utils.Adam_mult import AdamWarmup, calc_train_steps
+from model.checkpoint_loader import load_model
 from keras.callbacks import ModelCheckpoint
 
 

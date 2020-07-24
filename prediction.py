@@ -2,8 +2,8 @@ import os
 import numpy as np
 from utils.mean_squared_error import metric_cor
 from utils.retention_parser import retention_config_parser
-from checkpoint_loader import build_model_from_config, load_model, load_checkpoint
-from Adam_mult import AdamWarmup, calc_train_steps
+from utils.Adam_mult import AdamWarmup, calc_train_steps
+from model.checkpoint_loader import build_model_from_config, load_model, load_checkpoint
 
 
 
