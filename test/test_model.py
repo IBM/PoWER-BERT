@@ -6,17 +6,6 @@ import json
 import csv
 import numpy as np
 import tensorflow as tf
-
-'''
-# Allow relative imports when being executed as script.
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    import test
-    __package__ = "test"
-'''
-
-#from .. import model
-#from .. import utils
 from model.checkpoint_loader import build_model_from_config 
 from utils.Adam_mult import AdamWarmup, calc_train_steps
 import unittest
