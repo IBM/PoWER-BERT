@@ -110,7 +110,6 @@ python main.py --TASK "mrpc" \
 --BERT_CONFIG_PATH $BERT_BASE_DIR/bert_config.json  \
 --CHECKPOINT_PATH /best/re-trained/checkpoint/obtained/above \
 --VOCAB_PATH $BERT_BASE_DIR/vocab.txt \
---CASED \
 --EVAL_ONLY \
 --MODEL_FORMAT "HDF5" \
 --RETENTION_CONFIG /retention/configuration/obtained/above \
